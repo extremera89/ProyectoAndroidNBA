@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".PantallaPrincipal">
+    <item android:id="@+id/itemsListFragment"
+        android:icon="@drawable/home_logo"
+        android:title="@string/inicio" />
+
+    <item android:id="@+id/userFragment"
+        android:icon="@drawable/miperfil_logo"
+        android:title="@string/micuenta" />
+
+    <item android:id="@+id/addItemFragment"
+        android:icon="@drawable/insertar_logo"
+        android:title="@string/add" />
+
+    <item android:id="@+id/addJugadorFragment"
+        android:icon="@drawable/ic_baseline_sports_handball_24"
+        android:title="@string/addjugador" />
+
+    <item android:id="@+id/settingsFragment"
+        android:icon="@drawable/settings_logo"
+        android:title="@string/settings" />
+
+
+
+</menu>

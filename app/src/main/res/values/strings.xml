@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">NBA Loader</string>
+    <string name="inicio">Inicio</string>
+    <string name="micuenta">Mi cuenta</string>
+    <string name="addjugador">Añadir jugador</string>
+    <string name="add">Añadir Equipo</string>
+    <string name="settings">Ajustes</string>
+    <string name="image_icon">Image Icon</string>
+    <string name="team">Equipo</string>
+    <string name="year">Año</string>
+    <string name="logo">Logo</string>
+    <string name="nombreequipo">Nombre del equipo:</string>
+    <string name="anyoequipo">Año del equipo: </string>
+    <string name="jugadores">Jugadores</string>
+    <string name="base">Base: </string>
+    <string name="escolta">Escolta: </string>
+    <string name="alero">Alero: </string>
+    <string name="alapivot">Ala-pivot: </string>
+    <string name="pivot">Pivot: </string>
+    <string name="nombreapp">NBA Loader</string>
+    <string name="descripcionapp">Sube los mejores quintetos de la historia de la NBA</string>
+    <string name="open_drawer">Open navigation drawer</string>
+    <string name="close_drawer">Close navigation drawer</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>

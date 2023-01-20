@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragments.AddJugador">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="280sp"
+        android:background="@drawable/rounded_edit_text" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="378dp"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:id="@+id/linearNombreJugador"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/nameJugador"
+                android:layout_width="104dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:fontFamily="@font/krona_one"
+                android:gravity="center_vertical"
+                android:text="Nombre:"
+                android:textAppearance="@android:style/TextAppearance.Medium"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/editNameJugador"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nombre del jugador"
+                android:inputType="text"
+                android:maxLength="24"
+                android:textAppearance="@android:style/TextAppearance.Medium"
+                android:textColor="@color/white"
+                android:textColorHint="#848484"
+                android:textSize="14sp"
+                android:textStyle="italic" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/linearPosicionJugador"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/posicionJugador"
+                android:layout_width="104dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:fontFamily="@font/krona_one"
+                android:gravity="center_vertical"
+                android:text="Posición:"
+                android:textAppearance="@android:style/TextAppearance.Medium"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/editPosJugador"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Posición del jugador"
+                android:inputType="text"
+                android:maxLength="24"
+                android:textAppearance="@android:style/TextAppearance.Medium"
+                android:textColor="@color/white"
+                android:textColorHint="#848484"
+                android:textSize="14sp"
+                android:textStyle="italic" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/linearAltura"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/dorsalJugador"
+                android:layout_width="104dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:fontFamily="@font/krona_one"
+                android:gravity="center_vertical"
+                android:text="Dorsal:"
+                android:textAppearance="@android:style/TextAppearance.Medium"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/editbase2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Dorsal del jugador"
+                android:inputType="text"
+                android:maxLength="24"
+                android:textAppearance="@android:style/TextAppearance.Medium"
+                android:textColor="@color/white"
+                android:textColorHint="#848484"
+                android:textSize="14sp"
+                android:textStyle="italic" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearEdad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/edadJugador"
+                android:layout_width="104dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:fontFamily="@font/krona_one"
+                android:gravity="center_vertical"
+                android:text="Edad:"
+                android:textAppearance="@android:style/TextAppearance.Medium"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/editescolta2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Edad del jugador"
+                android:inputType="text"
+                android:maxLength="24"
+                android:textAppearance="@android:style/TextAppearance.Medium"
+                android:textColor="@color/white"
+                android:textColorHint="#848484"
+                android:textSize="14sp"
+                android:textStyle="italic" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="541dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnAceptarJugador"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Aceptar" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>
