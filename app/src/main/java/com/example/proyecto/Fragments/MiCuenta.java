@@ -47,11 +47,8 @@ public class MiCuenta extends Fragment {
 
         });
 
-        //UsuarioRealm user = context.getDatosUsuario();
 
         SharedPreferences preferences = getApplicationContext().getSharedPreferences("userCredentials", Context.MODE_PRIVATE);
-        //nick.setText(preferences.getString("nickname",""));
-        //pass.setText(preferences.getString("password",""));
 
         nombre = (TextView) rootView.findViewById(R.id.idnameusuario2);
         nombre.setText(nombre.getText().toString()+" "+preferences.getString("nickname",""));
