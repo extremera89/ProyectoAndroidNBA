@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/fondo3"
-    tools:context=".ActivityRegistro">
+    tools:context=".activities.ActivityRegistro">
 
     <EditText
         android:id="@+id/email"

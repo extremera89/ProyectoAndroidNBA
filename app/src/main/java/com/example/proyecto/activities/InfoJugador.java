@@ -1,4 +1,4 @@
-package com.example.proyecto;
+package com.example.proyecto.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,7 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.proyecto.Interface.JsonPlaceHolder;
+import com.example.proyecto.Interfaces.JsonPlaceHolder;
+import com.example.proyecto.R;
 import com.example.proyecto.com.prueba.gson.Datum;
 import com.example.proyecto.com.prueba.gson.Player;
 

@@ -1,25 +1,20 @@
-package com.example.proyecto;
+package com.example.proyecto.activities;
 
-import static java.security.AccessController.getContext;
+import static io.realm.Realm.getApplicationContext;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.proyecto.R;
 import com.example.proyecto.Realm.OperacionesUsuario;
-import com.example.proyecto.Realm.UsuarioRealm;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -29,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     EditText nick;
     EditText pass;
     SharedPreferences.Editor editor ;
-
+    static boolean iniciado = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,16 +32,21 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().hide();
 
-        Realm.init(this);
-        String realm = "EquipoProject";
-        RealmConfiguration config = new RealmConfiguration.Builder()
-                .name(realm)
-                .allowQueriesOnUiThread(true)
-                .allowWritesOnUiThread(true)
-                .compactOnLaunch()
-                .build();
 
-        Realm.setDefaultConfiguration(config);
+        if(!iniciado){
+            Realm.init(this);
+            String realm = "EquipoProject";
+            RealmConfiguration config = new RealmConfiguration.Builder()
+                    .name(realm)
+                    .allowQueriesOnUiThread(true)
+                    .allowWritesOnUiThread(true)
+                    .compactOnLaunch()
+                    .build();
+
+            Realm.setDefaultConfiguration(config);
+            iniciado = true;
+        }
+
 
         nick = (EditText) findViewById(R.id.nombreUsuario);
 
@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
         botonEnviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 saveUserPreferences();
 
 
@@ -82,6 +81,11 @@ public class MainActivity extends AppCompatActivity {
         editor = preferences.edit();
         editor.putString("nickname", nick.getText().toString());
         editor.putString("password", pass.getText().toString());
+        String nick2 = preferences.getString("nickname","");
+        String pass2 = preferences.getString("password", "");
+        System.out.println("EL USUARIOM ES: => "+nick2);
+        System.out.println("LA CONTRASEÑA ES: =>" +pass2);
+
         editor.apply();
         if(!"".equals(nick.getText().toString()) && !"".equals(pass.getText().toString())){
             login();
@@ -117,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
             bundle.putString("password", pass.getText().toString());
             pantallaPrincipal.putExtras(bundle);
             startActivity(pantallaPrincipal);
+            finish();
         }
         else{
             Toast.makeText(getApplicationContext(), "USUARIO/CONTRASEÑA INCORRECTO", Toast.LENGTH_SHORT).show();

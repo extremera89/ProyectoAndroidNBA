@@ -7,7 +7,7 @@
     android:background="@drawable/fondo3"
     tools:openDrawer="start"
     android:id="@+id/drawerLayout"
-    tools:context=".PantallaPrincipal"
+    tools:context=".activities.PantallaPrincipal"
     android:theme="@style/Animation.Design.BottomSheetDialog">
 
 

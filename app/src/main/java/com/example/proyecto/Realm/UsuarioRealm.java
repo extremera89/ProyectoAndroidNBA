@@ -2,6 +2,7 @@ package com.example.proyecto.Realm;
 
 import org.bson.types.ObjectId;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.Required;
@@ -19,6 +20,8 @@ public class UsuarioRealm extends RealmObject{
     @Required
     String password;
 
+    RealmList<EquipoRealm> equipos;
+
 
     public UsuarioRealm(){
 
@@ -28,11 +31,21 @@ public class UsuarioRealm extends RealmObject{
         this.nickname = nick;
         this.email = email;
         this.password = pass;
+        equipos = new RealmList<>();
     }
 
     public UsuarioRealm(String nick, String pass) {
         this.nickname = nick;
         this.password = pass;
+        equipos = new RealmList<>();
+
+    }
+
+    public UsuarioRealm(String nickname, String email, String password, RealmList<EquipoRealm> equipos) {
+        this.nickname = nickname;
+        this.email = email;
+        this.password = password;
+        this.equipos = equipos;
     }
 
     public String getId() {
@@ -65,5 +78,13 @@ public class UsuarioRealm extends RealmObject{
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public RealmList<EquipoRealm> getEquipos() {
+        return equipos;
+    }
+
+    public void setEquipos(RealmList<EquipoRealm> equipos) {
+        this.equipos = equipos;
     }
 }

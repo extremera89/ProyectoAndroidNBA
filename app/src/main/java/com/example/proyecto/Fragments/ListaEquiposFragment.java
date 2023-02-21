@@ -14,26 +14,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
+import android.widget.SearchView;
 
 import com.example.proyecto.Equipo.Equipo;
 import com.example.proyecto.Equipo.EquipoAdapter;
 import com.example.proyecto.Equipo.EquipoSingleton;
-import com.example.proyecto.MainActivity;
-import com.example.proyecto.PantallaPrincipal;
 import com.example.proyecto.R;
 import com.example.proyecto.Realm.EquipoRealm;
-
-import java.util.List;
+import com.example.proyecto.activities.PantallaPrincipal;
 
 import io.realm.Realm;
 
 
-public class ListaEquiposFragment extends Fragment {
+public class ListaEquiposFragment extends Fragment implements SearchView.OnQueryTextListener {
 
     View rootView;
     static PantallaPrincipal context;
+    SearchView txtBuscar;
+    EquipoAdapter adapter;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -58,6 +56,7 @@ public class ListaEquiposFragment extends Fragment {
         EquipoSingleton.getItemList().loadEquipos(context);
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
         RecyclerView recycler = (RecyclerView) rootView.findViewById(R.id.home);
+        txtBuscar = rootView.findViewById(R.id.buscadorHome);
 
 
 
@@ -73,24 +72,13 @@ public class ListaEquiposFragment extends Fragment {
 
 
         };
+        adapter = new EquipoAdapter(onItemClickListener);
 
+        recycler.setAdapter(adapter);
 
-        recycler.setAdapter(new EquipoAdapter(onItemClickListener));
-        //recycler.setAdapter(new EquipoAdapter());
+        txtBuscar.setOnQueryTextListener(this);
 
         return rootView;
-    }
-
-    public static void eliminar(Equipo equipo){
-        EquipoSingleton itemList = EquipoSingleton.getInstance();
-        int itemIndex = itemList.getItemList().getIndex(equipo);
-        itemList.getItemList().deleteItem(itemIndex);
-        itemList.getItemList().saveItems(context);
-        FragmentManager fm = context.getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.framelayout, new ListaEquiposFragment());
-        ft.commit();
-
     }
 
     public static void eliminar2(EquipoRealm equipo){
@@ -109,11 +97,16 @@ public class ListaEquiposFragment extends Fragment {
 
     }
 
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
 
-    /*public static void probando(int pos){
-        DialogFragment editItemFragment = new EditTeam(EquipoSingleton.getItemList().getItem(pos), pos);
-        FragmentManager fm = context.getSupportFragmentManager();
-        editItemFragment.show(fm, "EditDialogFragment");
-    }*/
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        adapter.filter(newText);
+        return false;
+    }
+
 
 }

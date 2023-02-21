@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import io.realm.Realm;
 
 public class OperacionesUsuario {
-
+    static Realm realm = Realm.getDefaultInstance();
 
 
     public static void insertarUsuarioNuevo(String nick, String email, String pass){
@@ -24,7 +24,7 @@ public class OperacionesUsuario {
 
     public static boolean comprobarLogin(String nick, String pass){
         boolean res = false;
-        Realm realm = Realm.getDefaultInstance();
+
 
         UsuarioRealm usuarioacomprobar = realm.where(UsuarioRealm.class).equalTo("nickname", nick).findFirst();
 

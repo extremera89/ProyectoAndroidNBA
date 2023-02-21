@@ -1,10 +1,13 @@
 package com.example.proyecto.Fragments;
 
 
+import static io.realm.Realm.getApplicationContext;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -25,12 +28,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.proyecto.Equipo.Equipo;
 import com.example.proyecto.Equipo.EquipoSingleton;
-import com.example.proyecto.Equipo.Jugador;
-import com.example.proyecto.InfoJugador;
-import com.example.proyecto.PantallaPrincipal;
 import com.example.proyecto.R;
 import com.example.proyecto.Realm.EquipoRealm;
 import com.example.proyecto.Realm.JugadorRealm;
+import com.example.proyecto.Realm.UsuarioRealm;
+import com.example.proyecto.activities.InfoJugador;
+import com.example.proyecto.activities.PantallaPrincipal;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -54,7 +57,6 @@ public class EditTeam extends DialogFragment {
     Bitmap imagenantigua;
     private int posicion;
 
-    Realm realm = Realm.getDefaultInstance();
 
 
     private ActivityResultLauncher<Intent> activityResultLauncher;
@@ -128,8 +130,10 @@ public class EditTeam extends DialogFragment {
         anyoequipo.setText(team.getYear());*/
 
 
+
         base = (EditText) rootView.findViewById(R.id.editbase2);
         base.setText(ekipo.getJugadores().get(0).getName());
+
 
         escolta = (EditText) rootView.findViewById(R.id.editescolta2);
         escolta.setText(ekipo.getJugadores().get(1).getName());
@@ -143,9 +147,35 @@ public class EditTeam extends DialogFragment {
         pivot = (EditText) rootView.findViewById(R.id.editpivot2);
         pivot.setText(ekipo.getJugadores().get(4).getName());
 
+        Button saveButton = (Button) rootView.findViewById(R.id.save_button);
 
-        //img = (ImageView) rootView.findViewById(R.id.imagenFoto);
-        //img.setImageBitmap(team.getImage());
+        botonFoto = (Button) rootView.findViewById(R.id.botonSeleccionarFoto);
+
+        if(comprobarUsuario()){
+            base.setEnabled(true);
+            escolta.setEnabled(true);
+            alero.setEnabled(true);
+            alapivot.setEnabled(true);
+            pivot.setEnabled(true);
+            saveButton.setEnabled(true);
+            botonFoto.setEnabled(true);
+            nombreequipo.setEnabled(true);
+            anyoequipo.setEnabled(true);
+
+        }else{
+            base.setEnabled(false);
+            escolta.setEnabled(false);
+            alero.setEnabled(false);
+            alapivot.setEnabled(false);
+            pivot.setEnabled(false);
+            saveButton.setEnabled(false);
+            botonFoto.setEnabled(false);
+            nombreequipo.setEnabled(false);
+            anyoequipo.setEnabled(false);
+
+        }
+
+
 
 
         Button botonBase = rootView.findViewById(R.id.btnInfoBase);
@@ -205,7 +235,6 @@ public class EditTeam extends DialogFragment {
         });
 
 
-        Button saveButton = (Button) rootView.findViewById(R.id.save_button);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -222,7 +251,6 @@ public class EditTeam extends DialogFragment {
         });
 
         img = (ImageView) rootView.findViewById(R.id.imagenFoto);
-        botonFoto = (Button) rootView.findViewById(R.id.botonSeleccionarFoto);
 
         botonFoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -375,6 +403,8 @@ public class EditTeam extends DialogFragment {
     }
 
     public JugadorRealm estoesprueba2(String nombre){
+        Realm realm = Realm.getDefaultInstance();
+
         List<JugadorRealm> jugaore = realm.where(JugadorRealm.class).findAll();
         for(JugadorRealm r : jugaore){
             if(r.getName().equals(nombre)){
@@ -399,6 +429,8 @@ public class EditTeam extends DialogFragment {
     }
 
     public void modificarEquipo(EquipoRealm equipo){
+        Realm realm = Realm.getDefaultInstance();
+
         String id = ekipo.getId();
 
         EquipoRealm equipoactualizar = realm.where(EquipoRealm.class).equalTo("id", id).findFirst();
@@ -418,7 +450,7 @@ public class EditTeam extends DialogFragment {
 
     }
 
-    public String buscarEquipo(String name){
+    /*public String buscarEquipo(String name){
         List<EquipoRealm> ekipos = realm.where(EquipoRealm.class).findAll();
         for(EquipoRealm r : ekipos){
             if(r.getName().equals(name)){
@@ -428,9 +460,26 @@ public class EditTeam extends DialogFragment {
 
         }
         return null;
+    }*/
+
+    public boolean comprobarUsuario(){
+        Realm realm = Realm.getDefaultInstance();
+
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("userCredentials", Context.MODE_PRIVATE);
+
+        String user = preferences.getString("nickname","");
+
+        EquipoRealm equipo = realm.where(EquipoRealm.class).equalTo("name", nombreequipo.getText().toString()).findFirst();
+
+        System.out.println("EQUIPO=> "+equipo.getUsuario());
+
+        if(equipo.getUsuario().getNickname().equals(user)){
+            return true;
+        }else{
+            return false;
+        }
+
     }
-
-
 
 
     public void cancelItem(View view) {

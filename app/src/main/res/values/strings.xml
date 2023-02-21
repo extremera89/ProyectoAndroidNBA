@@ -21,6 +21,7 @@
     <string name="descripcionapp">Sube los mejores quintetos de la historia de la NBA</string>
     <string name="open_drawer">Open navigation drawer</string>
     <string name="close_drawer">Close navigation drawer</string>
+    <string name="buscar_jugador">Buscar Jugador API</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

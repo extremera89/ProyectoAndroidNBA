@@ -1,4 +1,4 @@
-package com.example.proyecto;
+package com.example.proyecto.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -8,15 +8,15 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
-import android.app.Notification;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.PersistableBundle;
-import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.proyecto.Fragments.BuscarJugador;
+import com.example.proyecto.R;
 import com.example.proyecto.Fragments.AddJugador;
 import com.example.proyecto.Fragments.AddTeam;
 import com.example.proyecto.Fragments.ListaEquiposFragment;
@@ -24,11 +24,6 @@ import com.example.proyecto.Fragments.MiCuenta;
 import com.example.proyecto.Fragments.Settings;
 import com.example.proyecto.Realm.UsuarioRealm;
 import com.google.android.material.navigation.NavigationView;
-
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
 
 public class PantallaPrincipal extends AppCompatActivity {
@@ -109,6 +104,10 @@ public class PantallaPrincipal extends AppCompatActivity {
                         break;
                     case R.id.addJugadorFragment:
                         selectedFragment = new AddJugador();
+                        drawerLayout.closeDrawer(GravityCompat.START);
+                        break;
+                    case R.id.buscarJugadorFragment:
+                        selectedFragment = new BuscarJugador();
                         drawerLayout.closeDrawer(GravityCompat.START);
                         break;
                 }

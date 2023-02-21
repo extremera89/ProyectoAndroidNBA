@@ -1,4 +1,4 @@
-package com.example.proyecto.Interface;
+package com.example.proyecto.Interfaces;
 
 
 import retrofit2.Call;

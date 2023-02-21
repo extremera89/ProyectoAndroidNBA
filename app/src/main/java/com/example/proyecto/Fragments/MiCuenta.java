@@ -9,19 +9,22 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.proyecto.MainActivity;
-import com.example.proyecto.PantallaPrincipal;
 import com.example.proyecto.R;
-import com.example.proyecto.Realm.UsuarioRealm;
-
-import org.w3c.dom.Text;
+import com.example.proyecto.Realm.EquipoRealm;
+import com.example.proyecto.activities.MainActivity;
+import com.example.proyecto.activities.PantallaPrincipal;
+import com.example.proyecto.miperfil.MiPerfilAdapter;
+import com.example.proyecto.miperfil.MiPerfilSingleton;
 
 public class MiCuenta extends Fragment {
     View rootView;
@@ -33,6 +36,8 @@ public class MiCuenta extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView =  inflater.inflate(R.layout.fragment_mi_cuenta, container, false);
+        RecyclerView recycler = (RecyclerView) rootView.findViewById(R.id.recyclermicuenta);
+        MiPerfilSingleton.getItemList().loadEquipos();
 
         rootView.findViewById(R.id.idCerrarSesion).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,6 +46,7 @@ public class MiCuenta extends Fragment {
                 Intent intent =  new Intent(context, MainActivity.class);
                 logout();
                 startActivity(intent);
+                //context.finish();
             }
 
 
@@ -52,6 +58,20 @@ public class MiCuenta extends Fragment {
 
         nombre = (TextView) rootView.findViewById(R.id.idnameusuario2);
         nombre.setText(nombre.getText().toString()+" "+preferences.getString("nickname",""));
+
+
+        MiPerfilAdapter.OnItemClickListener onItemClickListener = new MiPerfilAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(EquipoRealm item) {
+                DialogFragment editItemFragment = new EditTeam(item,  MiPerfilSingleton.getItemList().getIndex(item));
+                FragmentManager fm = context.getSupportFragmentManager();
+                editItemFragment.show(fm, "EditDialogFragment");
+            }
+
+
+        };
+
+        recycler.setAdapter(new MiPerfilAdapter(onItemClickListener));
 
         return rootView;
 

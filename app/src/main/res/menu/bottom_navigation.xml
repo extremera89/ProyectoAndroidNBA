@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".PantallaPrincipal">
+    tools:context=".activities.PantallaPrincipal">
     <item android:id="@+id/itemsListFragment"
         android:icon="@drawable/home_logo"
         android:title="@string/inicio" />
@@ -17,6 +17,10 @@
     <item android:id="@+id/addJugadorFragment"
         android:icon="@drawable/ic_baseline_sports_handball_24"
         android:title="@string/addjugador" />
+
+    <item android:id="@+id/buscarJugadorFragment"
+        android:icon="@drawable/ic_baseline_search_24"
+        android:title="@string/buscar_jugador" />
 
     <item android:id="@+id/settingsFragment"
         android:icon="@drawable/settings_logo"

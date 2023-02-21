@@ -1,8 +1,10 @@
 package com.example.proyecto.Fragments;
 
+import static io.realm.Realm.getApplicationContext;
+
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.ColorStateList;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -10,8 +12,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -19,7 +19,6 @@ import androidx.fragment.app.FragmentTransaction;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -31,12 +30,11 @@ import android.widget.Toast;
 
 import com.example.proyecto.Equipo.Equipo;
 import com.example.proyecto.Equipo.EquipoSingleton;
-import com.example.proyecto.Equipo.Jugador;
-import com.example.proyecto.PantallaPrincipal;
 import com.example.proyecto.R;
 import com.example.proyecto.Realm.EquipoRealm;
 import com.example.proyecto.Realm.JugadorRealm;
-import com.google.android.material.navigation.NavigationView;
+import com.example.proyecto.Realm.UsuarioRealm;
+import com.example.proyecto.activities.PantallaPrincipal;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -78,6 +76,8 @@ public class AddTeam extends Fragment {
     ArrayAdapter<String> adapterarraypivots;
 
     Realm realm = Realm.getDefaultInstance();
+
+    UsuarioRealm usuario;
 
 
     @Nullable
@@ -275,11 +275,6 @@ public class AddTeam extends Fragment {
         }
     }
 
-
-
-
-
-
     @Override
     public void onAttach(@NonNull Context context) {
         this.context = (PantallaPrincipal) context;
@@ -294,6 +289,12 @@ public class AddTeam extends Fragment {
         String smallforward = alero.getText().toString();
         String powerforward = alapivot.getText().toString();
         String center = pivot.getText().toString();
+
+        System.out.println("EL BASE: "+guard);
+        System.out.println("EL ESCOLTA: "+shootingguard);
+        System.out.println("EL ALERO: "+smallforward);
+        System.out.println("EL ALAPIVOT: "+powerforward);
+        System.out.println("EL PIVOT: "+center);
 
         if (nameteam.equals("")) {
             nombreEquipo.setError("Error. El campo está vacío.");
@@ -378,8 +379,11 @@ public class AddTeam extends Fragment {
             ekipo.getJugadores().add(estoesprueba(smallforward));
             ekipo.getJugadores().add(estoesprueba(powerforward));
             ekipo.getJugadores().add(estoesprueba(center));
+            getUsuarioActual(ekipo);
 
-            insertar(ekipo);
+
+
+            modificarEquipo(ekipo);
 
             ResetFragmentFields();
 
@@ -419,6 +423,40 @@ public class AddTeam extends Fragment {
         alapivot.setText("");
         pivot.setText("");
         img.setImageResource(android.R.drawable.ic_menu_report_image);
+    }
+
+    public void modificarEquipo(EquipoRealm equipo){
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("userCredentials", Context.MODE_PRIVATE);
+
+        String user = preferences.getString("nickname","");
+
+        usuario = realm.where(UsuarioRealm.class).equalTo("nickname", user).findFirst();
+        assert usuario != null;
+
+
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                usuario.getEquipos().add(equipo);
+                realm.insert(usuario);
+            }
+        });
+
+    }
+
+    public void getUsuarioActual(EquipoRealm ekipo){
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("userCredentials", Context.MODE_PRIVATE);
+
+        String user = preferences.getString("nickname","");
+
+        usuario = realm.where(UsuarioRealm.class).equalTo("nickname", user).findFirst();
+
+        ekipo.setUsuario(usuario);
+
+        insertar(ekipo);
+
+
+
     }
 
 }

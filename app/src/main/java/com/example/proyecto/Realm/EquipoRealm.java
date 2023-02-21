@@ -1,16 +1,8 @@
 package com.example.proyecto.Realm;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Base64;
-
-import com.example.proyecto.Equipo.Jugador;
-
 import org.bson.types.ObjectId;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.List;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
@@ -34,6 +26,8 @@ public class EquipoRealm extends RealmObject {
 
     String image;
 
+    UsuarioRealm usuario;
+
 
     public EquipoRealm() {
     }
@@ -49,8 +43,17 @@ public class EquipoRealm extends RealmObject {
         this.name = name;
         this.year = year;
         this.image = image;
-        jugadores = new RealmList<>();
+        this.jugadores = new RealmList<>();
 
+
+    }
+
+    public EquipoRealm(String name, int year,  String image, UsuarioRealm usuario) {
+        this.name = name;
+        this.year = year;
+        jugadores = new RealmList<>();
+        this.image = image;
+        this.usuario = usuario;
     }
 
     public String getId() {
@@ -110,6 +113,14 @@ public class EquipoRealm extends RealmObject {
 
     public String getImage(){
         return this.image;
+    }
+
+    public UsuarioRealm getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(UsuarioRealm usuario) {
+        this.usuario = usuario;
     }
 }
 

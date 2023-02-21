@@ -11,11 +11,21 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.proyecto.PantallaPrincipal;
+import com.example.proyecto.Interfaces.JsonPlaceHolder;
 import com.example.proyecto.R;
 import com.example.proyecto.Realm.JugadorRealm;
+import com.example.proyecto.activities.PantallaPrincipal;
+import com.example.proyecto.com.prueba.gson.Datum;
+import com.example.proyecto.com.prueba.gson.Player;
+
+import java.util.List;
 
 import io.realm.Realm;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class AddJugador extends Fragment {

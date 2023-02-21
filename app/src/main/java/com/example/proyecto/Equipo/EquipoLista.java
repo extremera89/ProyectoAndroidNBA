@@ -2,7 +2,6 @@ package com.example.proyecto.Equipo;
 
 import android.content.Context;
 
-import com.example.proyecto.Equipo.Equipo;
 import com.example.proyecto.Realm.EquipoRealm;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -24,6 +23,7 @@ import io.realm.Realm;
 public class EquipoLista {
     private static ArrayList<Equipo> equipos;
     private static ArrayList<EquipoRealm> equipos2;
+    private static ArrayList<EquipoRealm> equiposOriginal;
 
     Realm realm = Realm.getDefaultInstance();
     private String FILENAME = "items.sav";
@@ -32,7 +32,16 @@ public class EquipoLista {
     }*/
     public EquipoLista() {
         equipos2 = new ArrayList<EquipoRealm>();
+        equiposOriginal = new ArrayList<EquipoRealm>();
     }
+    public ArrayList<EquipoRealm> getEquipo(){
+        return equipos2;
+    }
+
+    public ArrayList<EquipoRealm> getEquipoOriginal(){
+        return equiposOriginal;
+    }
+
     public void setItems(ArrayList<Equipo> item_list) {
         equipos = item_list;
     }
@@ -63,18 +72,6 @@ public class EquipoLista {
     public void editItem(Equipo equipo, int index) { equipos.set(index, equipo); }
     public void editItem2(EquipoRealm equipo, int index) { equipos2.set(index, equipo); }
 
-    public int getIndex(Equipo equipo) {
-        int pos = 0;
-        for (Equipo i : equipos) {
-            if (equipo.getName().equals(i.getName())) {
-                return pos;
-            }
-
-            pos++;
-        }
-
-        return -1;
-    }
 
     public int getIndex2(EquipoRealm equipo) {
         int pos = 0;
@@ -93,23 +90,9 @@ public class EquipoLista {
         return equipos2.size();
     }
 
-    public void loadItems(Context context) {
-
-        try {
-            FileInputStream fis = context.openFileInput(FILENAME);
-            InputStreamReader isr = new InputStreamReader(fis);
-            Gson gson = new Gson();
-            Type listType = new TypeToken<ArrayList<Equipo>>() {}.getType();
-            equipos = gson.fromJson(isr, listType); // temporary
-            fis.close();
-        } catch (FileNotFoundException e) {
-            equipos = new ArrayList<Equipo>();
-        } catch (IOException e) {
-            equipos = new ArrayList<Equipo>();
-        }
-    }
 
     public void loadEquipos(Context context){
+
         equipos2.clear();
 
 
@@ -118,6 +101,7 @@ public class EquipoLista {
             equipos2.add(r);
         }
 
+        EquipoSingleton.getItemList().getEquipoOriginal().addAll(equipos2);
 
     }
 

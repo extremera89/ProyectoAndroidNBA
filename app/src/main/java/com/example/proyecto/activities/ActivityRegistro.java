@@ -1,4 +1,4 @@
-package com.example.proyecto;
+package com.example.proyecto.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,11 +10,8 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.proyecto.R;
 import com.example.proyecto.Realm.OperacionesUsuario;
-
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
-
 
 
 public class ActivityRegistro extends AppCompatActivity {
