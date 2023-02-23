@@ -22,9 +22,6 @@
         android:icon="@drawable/ic_baseline_search_24"
         android:title="@string/buscar_jugador" />
 
-    <item android:id="@+id/settingsFragment"
-        android:icon="@drawable/settings_logo"
-        android:title="@string/settings" />
 
 
 

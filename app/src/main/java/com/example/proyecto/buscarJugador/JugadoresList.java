@@ -1,14 +1,16 @@
 package com.example.proyecto.buscarJugador;
 
 
+import com.example.proyecto.Realm.JugadorAPIRealm;
+
 import java.util.ArrayList;
 
 
 public class JugadoresList {
-    private static ArrayList<String> jugadores;
+    private static ArrayList<JugadorAPIRealm> jugadores;
 
     public JugadoresList(){
-        jugadores = new ArrayList<String>();
+        jugadores = new ArrayList<JugadorAPIRealm>();
 
     }
 
@@ -16,18 +18,18 @@ public class JugadoresList {
         jugadores.remove(index);
     }
 
-    public ArrayList<String> getJugadores(){
+    public ArrayList<JugadorAPIRealm> getJugadores(){
         return jugadores;
     }
 
-    public String getItem(int index) {
+    public JugadorAPIRealm getItem(int index) {
         return jugadores.get(index);
     }
 
-    public int getIndex(String jugador) {
+    public int getIndex(JugadorAPIRealm jugador) {
         int pos = 0;
-        for (String i : jugadores) {
-            if (jugador.equals(i)) {
+        for (JugadorAPIRealm i : jugadores) {
+            if (jugador.getFirstname().equals(i.getFirstname()) && jugador.getLastname().equals(i.getLastname())) {
                 return pos;
             }
 
@@ -41,7 +43,7 @@ public class JugadoresList {
         return jugadores.size();
     }
 
-    public void loadJugadores(String posible){
+    public void loadJugadores(JugadorAPIRealm posible){
 
         jugadores.add(posible);
 

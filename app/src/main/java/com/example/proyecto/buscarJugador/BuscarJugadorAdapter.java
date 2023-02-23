@@ -4,17 +4,18 @@ package com.example.proyecto.buscarJugador;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.proyecto.R;
+import com.example.proyecto.Realm.JugadorAPIRealm;
 
 
 public class BuscarJugadorAdapter extends RecyclerView.Adapter<BuscarJugadorAdapter.ViewHolder> {
     private OnItemClickListener onItemClickListener;
-
     public BuscarJugadorAdapter(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
@@ -34,12 +35,9 @@ public class BuscarJugadorAdapter extends RecyclerView.Adapter<BuscarJugadorAdap
     @Override
     public void onBindViewHolder(@NonNull BuscarJugadorAdapter.ViewHolder holder, int position) {
 
-        String jugador = JugadorSingleton.getItemList().getItem(position);
-
+        JugadorAPIRealm jugador = JugadorSingleton.getItemList().getItem(position);
         holder.bind2(jugador);
-        holder.itemView.setOnClickListener(view -> {
-            if (jugador != null) onItemClickListener.onItemClick(jugador);
-        });
+
 
     }
 
@@ -59,15 +57,18 @@ public class BuscarJugadorAdapter extends RecyclerView.Adapter<BuscarJugadorAdap
 
         }
 
-        public void bind2(String item) {
-            nombre.setText(item);
+        public void bind2(JugadorAPIRealm item) {
+            nombre.setText(item.getFirstname()+" "+item.getLastname());
 
         }
     }
 
+
+
     public interface OnItemClickListener {
         public void onItemClick(String jugador);
     }
+
 
 
 }

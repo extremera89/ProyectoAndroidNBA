@@ -24,6 +24,7 @@
         </activity>
         <activity
             android:name=".activities.PantallaPrincipal"
+            android:windowSoftInputMode="adjustNothing"
             android:exported="true"
             android:label="@string/nombreapp">
             <meta-data

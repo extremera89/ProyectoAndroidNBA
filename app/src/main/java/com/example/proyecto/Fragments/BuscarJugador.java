@@ -1,8 +1,15 @@
 package com.example.proyecto.Fragments;
 
+import static io.realm.Realm.getApplicationContext;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Canvas;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -10,21 +17,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.proyecto.Interfaces.JsonPlaceHolder;
 import com.example.proyecto.R;
+import com.example.proyecto.Realm.EquipoRealm;
+import com.example.proyecto.Realm.JugadorAPIRealm;
+import com.example.proyecto.Realm.JugadorRealm;
+import com.example.proyecto.Realm.UsuarioRealm;
 import com.example.proyecto.activities.PantallaPrincipal;
 import com.example.proyecto.buscarJugador.BuscarJugadorAdapter;
 import com.example.proyecto.buscarJugador.JugadorSingleton;
 import com.example.proyecto.buscarJugador.JugadoresList;
+import com.example.proyecto.buscarJugador.RecyclerViewSwipeDecorator;
 import com.example.proyecto.com.prueba.gson.Datum;
 import com.example.proyecto.com.prueba.gson.Player;
-import com.example.proyecto.miperfil.MiPerfilAdapter;
-import com.example.proyecto.miperfil.MisEquiposList;
 
 import java.util.List;
 
+import io.realm.Realm;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -32,16 +43,21 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class BuscarJugador extends Fragment {
+public class BuscarJugador extends Fragment{
     View rootView;
     PantallaPrincipal context;
-
+    BuscarJugadorAdapter adapter;
+    RecyclerView recycler;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        rootView =  inflater.inflate(R.layout.fragment_buscar_jugador, container, false);
-        RecyclerView recycler = (RecyclerView) rootView.findViewById(R.id.recyclerbuscadorjugadores);
+        rootView = inflater.inflate(R.layout.fragment_buscar_jugador, container, false);
+        recycler = (RecyclerView) rootView.findViewById(R.id.recyclerbuscadorjugadores);
+
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callBackMethod);
+        itemTouchHelper.attachToRecyclerView(recycler);
 
         Button botonBuscar = rootView.findViewById(R.id.botonBuscarjugador);
         botonBuscar.setOnClickListener(new View.OnClickListener() {
@@ -51,15 +67,52 @@ public class BuscarJugador extends Fragment {
 
             }
         });
-        recycler.setAdapter(new BuscarJugadorAdapter());
+        adapter = new BuscarJugadorAdapter();
+
+        recycler.setAdapter(adapter);
 
         return rootView;
 
     }
 
+    ItemTouchHelper.SimpleCallback callBackMethod = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            int position = viewHolder.getAdapterPosition();
+            JugadorAPIRealm jugaor = JugadorSingleton.getItemList().getItem(position);
+            anyadirjugadorApi(jugaor);
+
+
+            recycler.getAdapter().notifyItemChanged(position);
+
+
+
+
+        }
+
+        @Override
+        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+            new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                    .addSwipeLeftLabel("FAV")
+                    .setSwipeLeftLabelColor(getResources().getColor(R.color.white))
+                    .addSwipeLeftActionIcon(R.drawable.ic_baseline_star_24)
+                    .setSwipeLeftActionIconTint(getResources().getColor(R.color.white))
+                    .addSwipeLeftBackgroundColor(getResources().getColor(R.color.gold))
+                    .create()
+                    .decorate();
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+        }
+    };
 
     private void buscarJugadores(){
         JugadorSingleton.getItemList().getJugadores().clear();
+
+
         System.out.println("TAMAÑO DE ARRAYLIST: "+JugadorSingleton.getItemList().getSize());
         RecyclerView recycler = (RecyclerView) rootView.findViewById(R.id.recyclerbuscadorjugadores);
         recycler.getAdapter().notifyDataSetChanged();
@@ -85,18 +138,16 @@ public class BuscarJugador extends Fragment {
                     return;
                 }
 
-
-
                 Player postList = response.body();
                 List<Datum> listajugadores = postList.getData();
 
 
                 for(Datum p : listajugadores){
-                    String posible = p.getFirst_name()+" "+p.getLast_name()+" - "+ p.getPosition();
+                    JugadorAPIRealm posible = new JugadorAPIRealm(p.getFirst_name(), p.getLast_name(), p.getPosition());
+
                     JugadorSingleton.getItemList().loadJugadores(posible);
                     recycler.getAdapter().notifyItemChanged(JugadorSingleton.getItemList().getIndex(posible));
                     recycler.getAdapter().notifyDataSetChanged();
-
                 }
 
 
@@ -108,8 +159,101 @@ public class BuscarJugador extends Fragment {
             }
         });
 
+    }
 
+
+    public void anyadirjugadorApi(JugadorAPIRealm jugador){
+        Realm realm = Realm.getDefaultInstance();
+
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("userCredentials", Context.MODE_PRIVATE);
+
+        String user = preferences.getString("nickname","");
+
+        UsuarioRealm usuario = realm.where(UsuarioRealm.class).equalTo("nickname", user).findFirst();
+        JugadorAPIRealm jugaor = realm.where(JugadorAPIRealm.class).equalTo("firstname", jugador.getFirstname()).equalTo("lastname",
+                jugador.getLastname()).findFirst();
+
+
+        System.out.println("JUGADOR REPETIO: "+jugador.getId()+"-"+jugador.getFirstname()+"-"+jugador.getLastname());
+
+        if(isFavorite(jugador)){
+            System.out.println("TA REPETIO");
+            System.out.println(usuario.getJugadoresapi().size());
+
+            System.out.println("EL JUGADOR ES: "+jugador.getFirstname()+" - "+jugador.getLastname());
+
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    System.out.println("EL USUARIO ES: "+usuario);
+                    if(devPosicionJugador(jugador)>=0){
+                        usuario.getJugadoresapi().deleteFromRealm(devPosicionJugador(jugador));
+                        System.out.println(usuario.getJugadoresapi().size());
+                        System.out.println("SE ELIMINA");
+                        realm.insert(usuario);
+                    }
+                    else{
+                        System.out.println("ERROR");
+                    }
+
+                }
+            });
+            Toast.makeText(getApplicationContext(), "Jugador eliminado de favoritos", Toast.LENGTH_SHORT).show();
+
+        }else{
+            System.out.println("SE INSERTa");
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    usuario.getJugadoresapi().add(jugador);
+                    realm.insert(usuario);
+                }
+            });
+
+            Toast.makeText(getApplicationContext(), "Jugador añadido a favoritos", Toast.LENGTH_SHORT).show();
+
+        }
 
 
     }
+
+
+    public boolean isFavorite(JugadorAPIRealm jugador){
+        Realm realm = Realm.getDefaultInstance();
+
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("userCredentials", Context.MODE_PRIVATE);
+
+        String user = preferences.getString("nickname","");
+
+        UsuarioRealm usuario = realm.where(UsuarioRealm.class).equalTo("nickname", user).findFirst();
+
+
+        for(JugadorAPIRealm r : usuario.getJugadoresapi()){
+            if(r.getFirstname().equals(jugador.getFirstname()) && r.getLastname().equals(jugador.getLastname())){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public int devPosicionJugador(JugadorAPIRealm jugador){
+        Realm realm = Realm.getDefaultInstance();
+
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("userCredentials", Context.MODE_PRIVATE);
+
+        String user = preferences.getString("nickname","");
+
+        UsuarioRealm usuario = realm.where(UsuarioRealm.class).equalTo("nickname", user).findFirst();
+
+        for(int i = 0; i<usuario.getJugadoresapi().size(); i++){
+            if(jugador.getFirstname().equals(usuario.getJugadoresapi().get(i).getFirstname()) &&
+                    jugador.getLastname().equals(usuario.getJugadoresapi().get(i).getLastname())){
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
 }

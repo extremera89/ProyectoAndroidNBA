@@ -22,6 +22,8 @@ public class UsuarioRealm extends RealmObject{
 
     RealmList<EquipoRealm> equipos;
 
+    RealmList<JugadorAPIRealm> jugadoresapi;
+
 
     public UsuarioRealm(){
 
@@ -32,12 +34,14 @@ public class UsuarioRealm extends RealmObject{
         this.email = email;
         this.password = pass;
         equipos = new RealmList<>();
+        jugadoresapi = new RealmList<>();
     }
 
     public UsuarioRealm(String nick, String pass) {
         this.nickname = nick;
         this.password = pass;
         equipos = new RealmList<>();
+        jugadoresapi = new RealmList<>();
 
     }
 
@@ -47,6 +51,9 @@ public class UsuarioRealm extends RealmObject{
         this.password = password;
         this.equipos = equipos;
     }
+
+
+
 
     public String getId() {
         return id;
@@ -87,4 +94,15 @@ public class UsuarioRealm extends RealmObject{
     public void setEquipos(RealmList<EquipoRealm> equipos) {
         this.equipos = equipos;
     }
+
+    public RealmList<JugadorAPIRealm> getJugadoresapi() {
+        return jugadoresapi;
+    }
+
+    public void setJugadoresapi(RealmList<JugadorAPIRealm> jugadoresapi) {
+        this.jugadoresapi = jugadoresapi;
+    }
+
+
+
 }

@@ -94,29 +94,15 @@ public class EquipoLista {
     public void loadEquipos(Context context){
 
         equipos2.clear();
-
+        equiposOriginal.clear();
 
         List<EquipoRealm> ekipos = realm.where(EquipoRealm.class).findAll();
         for(EquipoRealm r : ekipos){
             equipos2.add(r);
         }
 
-        EquipoSingleton.getItemList().getEquipoOriginal().addAll(equipos2);
+        equiposOriginal.addAll(equipos2);
 
     }
 
-    public void saveItems(Context context) {
-        try {
-            FileOutputStream fos = context.openFileOutput(FILENAME, 0);
-            OutputStreamWriter osw = new OutputStreamWriter(fos);
-            Gson gson = new Gson();
-            gson.toJson(equipos, osw);
-            osw.flush();
-            fos.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }

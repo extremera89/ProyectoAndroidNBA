@@ -83,8 +83,7 @@ public class MainActivity extends AppCompatActivity {
         editor.putString("password", pass.getText().toString());
         String nick2 = preferences.getString("nickname","");
         String pass2 = preferences.getString("password", "");
-        System.out.println("EL USUARIOM ES: => "+nick2);
-        System.out.println("LA CONTRASEÑA ES: =>" +pass2);
+
 
         editor.apply();
         if(!"".equals(nick.getText().toString()) && !"".equals(pass.getText().toString())){

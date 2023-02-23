@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
 
-import com.example.proyecto.Equipo.Equipo;
 import com.example.proyecto.Equipo.EquipoAdapter;
 import com.example.proyecto.Equipo.EquipoSingleton;
 import com.example.proyecto.R;
@@ -60,11 +59,11 @@ public class ListaEquiposFragment extends Fragment implements SearchView.OnQuery
 
 
 
+
         EquipoAdapter.OnItemClickListener onItemClickListener = new EquipoAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(EquipoRealm item) {
                 DialogFragment editItemFragment = new EditTeam(item,  EquipoSingleton.getItemList().getIndex2(item));
-                //System.out.println("POSICIOOOOOON -> "+EquipoSingleton.getItemList().getIndex(item));
                 FragmentManager fm = context.getSupportFragmentManager();
                 editItemFragment.show(fm, "EditDialogFragment");
             }
@@ -89,7 +88,6 @@ public class ListaEquiposFragment extends Fragment implements SearchView.OnQuery
         realm.beginTransaction();
         equipo.deleteFromRealm();
         realm.commitTransaction();
-        //itemList.getItemList().saveItems(context);
         FragmentManager fm = context.getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.framelayout, new ListaEquiposFragment());
@@ -107,6 +105,7 @@ public class ListaEquiposFragment extends Fragment implements SearchView.OnQuery
         adapter.filter(newText);
         return false;
     }
+
 
 
 }

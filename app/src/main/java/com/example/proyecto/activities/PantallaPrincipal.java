@@ -21,12 +21,11 @@ import com.example.proyecto.Fragments.AddJugador;
 import com.example.proyecto.Fragments.AddTeam;
 import com.example.proyecto.Fragments.ListaEquiposFragment;
 import com.example.proyecto.Fragments.MiCuenta;
-import com.example.proyecto.Fragments.Settings;
 import com.example.proyecto.Realm.UsuarioRealm;
 import com.google.android.material.navigation.NavigationView;
 
 
-public class PantallaPrincipal extends AppCompatActivity {
+public class PantallaPrincipal extends AppCompatActivity{
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle actionBarDrawerToggle;
     NavigationView navigationView;
@@ -98,10 +97,6 @@ public class PantallaPrincipal extends AppCompatActivity {
                         selectedFragment = new ListaEquiposFragment();
                         drawerLayout.closeDrawer(GravityCompat.START);
                         break;
-                    case R.id.settingsFragment:
-                        selectedFragment = new Settings();
-                        drawerLayout.closeDrawer(GravityCompat.START);
-                        break;
                     case R.id.addJugadorFragment:
                         selectedFragment = new AddJugador();
                         drawerLayout.closeDrawer(GravityCompat.START);
@@ -121,11 +116,6 @@ public class PantallaPrincipal extends AppCompatActivity {
 
         navigationView.setItemIconTintList(ColorStateList.valueOf(getResources().getColor(R.color.teal_200)));
 
-
-        /*BottomNavigationView bottomNav = findViewById(R.id.bottomNavigationView);
-
-        bottomNav.setOnNavigationItemSelectedListener(navListener);
-        getSupportFragmentManager().beginTransaction().replace(R.id.framelayout, new ListaEquiposFragment()).commit();*/
 
     }
 
@@ -160,33 +150,5 @@ public class PantallaPrincipal extends AppCompatActivity {
     }
 
 
-    /* private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            Fragment selectedFragment = null;
-
-
-            switch(item.getItemId()){
-                case R.id.addItemFragment:
-                    selectedFragment = new AddItems();
-                    break;
-                case R.id.userFragment:
-                    selectedFragment = new MiCuenta();
-                    break;
-                case R.id.itemsListFragment:
-                    selectedFragment = new ListaEquiposFragment();
-                    break;
-                case R.id.settingsFragment:
-                    selectedFragment = new Settings();
-                    break;
-            }
-
-            assert selectedFragment != null;
-            getSupportFragmentManager().beginTransaction().replace(R.id.framelayout, selectedFragment).commit();
-            return true;
-
-        }
-
-    };*/
 
 }

@@ -1,5 +1,9 @@
 package com.example.proyecto.Equipo;
 
+import static io.realm.Realm.getApplicationContext;
+
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
@@ -7,6 +11,7 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,10 +27,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
+import io.realm.Realm;
+
 
 public class EquipoAdapter extends RecyclerView.Adapter<EquipoAdapter.ViewHolder> {
     private OnItemClickListener onItemClickListener;
-    private static ArrayList<EquipoRealm> equiposOriginal;
 
 
     public EquipoAdapter(OnItemClickListener onItemClickListener) {
@@ -61,9 +67,6 @@ public class EquipoAdapter extends RecyclerView.Adapter<EquipoAdapter.ViewHolder
         return EquipoSingleton.getItemList().getSize();
     }
 
-    /*public interface OnItemClickListener {
-        public void onItemClick(Equipo equipo);
-    }*/
 
     public interface OnItemClickListener {
         public void onItemClick(EquipoRealm equipo);
@@ -74,6 +77,8 @@ public class EquipoAdapter extends RecyclerView.Adapter<EquipoAdapter.ViewHolder
         private TextView title;
         private TextView maker;
         private ImageView foto;
+
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -94,13 +99,6 @@ public class EquipoAdapter extends RecyclerView.Adapter<EquipoAdapter.ViewHolder
 
         }
 
-        public void bind(Equipo item) {
-            title.setText(item.getName());
-            maker.setText(item.getYear());
-            foto.setImageBitmap(item.getImage());
-
-        }
-
         public void bind2(EquipoRealm item) {
             title.setText(item.getName());
             maker.setText(String.valueOf(item.getYear()));
@@ -109,6 +107,15 @@ public class EquipoAdapter extends RecyclerView.Adapter<EquipoAdapter.ViewHolder
             Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
             foto.setImageBitmap(bitmap);
 
+            ImageButton button = rootView.findViewById(R.id.botonEliminar);
+            if(comprobarUsuario(title.getText().toString())){
+                button.setVisibility(View.VISIBLE);
+
+            }else{
+                button.setVisibility(View.INVISIBLE);
+
+
+            }
 
         }
     }
@@ -139,6 +146,27 @@ public class EquipoAdapter extends RecyclerView.Adapter<EquipoAdapter.ViewHolder
         }
         notifyDataSetChanged();
     }
+
+    public static boolean comprobarUsuario(String nombreequipo){
+
+        Realm realm = Realm.getDefaultInstance();
+
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("userCredentials", Context.MODE_PRIVATE);
+
+        String user = preferences.getString("nickname","");
+
+        EquipoRealm equipo = realm.where(EquipoRealm.class).equalTo("name", nombreequipo).findFirst();
+
+        System.out.println("EQUIPO=> "+equipo);
+
+        if(equipo.getUsuario().getNickname().equals(user)){
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+
 
 
 }
