@@ -332,30 +332,7 @@ public class AddTeam extends Fragment {
         }
 
         try {
-            Equipo team = new Equipo(nameteam, year, image);
-            /*Jugador jugador1 = new Jugador(guard);
-            Jugador jugador2 = new Jugador(shootingguard);
-            Jugador jugador3 = new Jugador(smallforward);
-            Jugador jugador4 = new Jugador(powerforward);
-            Jugador jugador5 = new Jugador(center);
 
-
-            team.getJugadores().add(jugador1);
-            team.getJugadores().add(jugador2);
-            team.getJugadores().add(jugador3);
-            team.getJugadores().add(jugador4);
-            team.getJugadores().add(jugador5);*/
-
-
-            EquipoSingleton itemList = EquipoSingleton.getInstance();
-            /*itemList.getItemList().addItem(team);
-            itemList.getItemList().saveItems(context);*/
-
-
-            /*ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
-            image.compress(Bitmap.CompressFormat.PNG, 100, byteArrayBitmapStream);
-            byte[] b = byteArrayBitmapStream.toByteArray();
-            imagenrealm = Base64.encodeToString(b, Base64.DEFAULT);*/
             EquipoRealm ekipo;
 
             if(imagenString==null){
@@ -369,11 +346,6 @@ public class AddTeam extends Fragment {
                 ekipo = new EquipoRealm(nameteam, Integer.parseInt(year), imagenString);
 
             }
-            /*JugadorRealm jugador1 = estoesprueba(guard);
-            JugadorRealm jugador2 = estoesprueba(shootingguard);
-            JugadorRealm jugador3 = estoesprueba(smallforward);
-            JugadorRealm jugador4 = estoesprueba(powerforward);
-            JugadorRealm jugador5 = estoesprueba(center);*/
             ekipo.getJugadores().add(estoesprueba(guard));
             ekipo.getJugadores().add(estoesprueba(shootingguard));
             ekipo.getJugadores().add(estoesprueba(smallforward));

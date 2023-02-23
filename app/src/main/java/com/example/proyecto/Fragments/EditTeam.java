@@ -109,9 +109,6 @@ public class EditTeam extends DialogFragment {
         imagenantigua = bitmap;
 
 
-        //imagenantigua = ekipo.getImage();
-
-
         nombreequipo = (EditText) rootView.findViewById(R.id.editNombre);
         nombreequipo.setText(ekipo.getName());
 
@@ -123,11 +120,6 @@ public class EditTeam extends DialogFragment {
         Bitmap bitmap2 = BitmapFactory.decodeByteArray(bye, 0, bye.length);
         img.setImageBitmap(bitmap2);
 
-        /*nombreequipo = (EditText) rootView.findViewById(R.id.editNombre);
-        nombreequipo.setText(team.getName());
-
-        anyoequipo = (EditText) rootView.findViewById(R.id.editAnyo);
-        anyoequipo.setText(team.getYear());*/
 
 
 
@@ -371,13 +363,6 @@ public class EditTeam extends DialogFragment {
             }
 
 
-
-            /*String idd = buscarEquipo(nombreequipo_str);
-
-            equipo.setId(idd);
-            System.out.println("LA IDDDDDDDDDDDDDDDDDD=>>>>>> " +equipo.getId());*/
-
-
             equipo.getJugadores().add(estoesprueba2(base_str));
             equipo.getJugadores().add(estoesprueba2(escolta_str));
             equipo.getJugadores().add(estoesprueba2(alero_str));
@@ -389,8 +374,6 @@ public class EditTeam extends DialogFragment {
 
             EquipoSingleton itemList = EquipoSingleton.getInstance();
             int itemIndex = itemList.getItemList().getIndex2(ekipo);
-            //itemList.getItemList().editItem2(equipo, itemIndex);
-            //itemList.getItemList().saveItems(context);
 
             RecyclerView recycler = (RecyclerView) context.findViewById(R.id.home);
             recycler.getAdapter().notifyItemChanged(itemIndex);
@@ -449,18 +432,6 @@ public class EditTeam extends DialogFragment {
         });
 
     }
-
-    /*public String buscarEquipo(String name){
-        List<EquipoRealm> ekipos = realm.where(EquipoRealm.class).findAll();
-        for(EquipoRealm r : ekipos){
-            if(r.getName().equals(name)){
-                System.out.println("ENTRÓOOOOO " + r.getId());
-                return r.getId();
-            }
-
-        }
-        return null;
-    }*/
 
     public boolean comprobarUsuario(){
         Realm realm = Realm.getDefaultInstance();

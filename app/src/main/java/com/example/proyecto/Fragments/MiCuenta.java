@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,12 +26,15 @@ import android.widget.TextView;
 import com.example.proyecto.R;
 import com.example.proyecto.Realm.EquipoRealm;
 import com.example.proyecto.Realm.UsuarioRealm;
+import com.example.proyecto.activities.ActivityRegistro;
 import com.example.proyecto.activities.MainActivity;
 import com.example.proyecto.activities.PantallaPrincipal;
 import com.example.proyecto.miperfil.MiPerfilAdapter;
 import com.example.proyecto.miperfil.MiPerfilSingleton;
 
 import org.w3c.dom.Text;
+
+import java.util.regex.Pattern;
 
 import io.realm.Realm;
 
@@ -39,6 +43,7 @@ public class MiCuenta extends Fragment {
     PantallaPrincipal context;
     EditText nombre;
     EditText password;
+    EditText correo;
 
 
     @Nullable
@@ -68,7 +73,7 @@ public class MiCuenta extends Fragment {
         nombre.setText(preferences.getString("nickname",""));
         String email = getEmail();
 
-        EditText correo = (EditText) rootView.findViewById(R.id.idemail2);
+        correo = (EditText) rootView.findViewById(R.id.idemail2);
         correo.setText(email);
         password = (EditText) rootView.findViewById(R.id.idpassword);
         password.setText(preferences.getString("password", ""));
@@ -90,33 +95,49 @@ public class MiCuenta extends Fragment {
                     password.setEnabled(true);
 
                 }else if(actualizadatos.getText().toString().equals("Confirmar cambios")){
-                    actualizadatos.setText("Actualizar datos");
-                    nombre.setEnabled(false);
-                    correo.setEnabled(false);
-                    password.setEnabled(false);
-                    Realm realm = Realm.getDefaultInstance();
-
-                    SharedPreferences preferences = getApplicationContext().getSharedPreferences("userCredentials", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = preferences.edit();
-                    String user = preferences.getString("nickname","");
-
-                    UsuarioRealm usuario = realm.where(UsuarioRealm.class).equalTo("nickname", user).findFirst();
-
-                    editor.putString("nickname", nombre.getText().toString());
-                    editor.putString("password", password.getText().toString());
-                    editor.apply();
-
-                    realm.executeTransaction(new Realm.Transaction() {
-                        @Override
-                        public void execute(Realm realm) {
-                            usuario.setNickname(nombre.getText().toString());
-                            usuario.setEmail(correo.getText().toString());
-                            usuario.setPassword(password.getText().toString());
-                            realm.copyToRealmOrUpdate(usuario);
+                    if(nombre.getText().length()<4){
+                        nombre.setError("El nick debe contener 4 letras mínimo");
+                    }
+                    else if(correo.getText().length()<1){
+                        correo.setError("El email no puede estar vacío");
+                        if(!validarEmail(correo.getText().toString())){
+                            correo.setError("El email no es correcto");
                         }
-                    });
+                    }
+                    else if(correo.getText().length()<8){
+                        correo.setError("La contraseña debe contener mínimo 8 caracteres");
+                    }else{
+                        actualizadatos.setText("Actualizar datos");
+
+                        nombre.setEnabled(false);
+                        correo.setEnabled(false);
+                        password.setEnabled(false);
 
 
+
+
+                        Realm realm = Realm.getDefaultInstance();
+
+                        SharedPreferences preferences = getApplicationContext().getSharedPreferences("userCredentials", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        String user = preferences.getString("nickname","");
+
+                        UsuarioRealm usuario = realm.where(UsuarioRealm.class).equalTo("nickname", user).findFirst();
+
+                        editor.putString("nickname", nombre.getText().toString());
+                        editor.putString("password", password.getText().toString());
+                        editor.apply();
+
+                        realm.executeTransaction(new Realm.Transaction() {
+                            @Override
+                            public void execute(Realm realm) {
+                                usuario.setNickname(nombre.getText().toString());
+                                usuario.setEmail(correo.getText().toString());
+                                usuario.setPassword(password.getText().toString());
+                                realm.copyToRealmOrUpdate(usuario);
+                            }
+                        });
+                    }
                 }
             }
         });
@@ -169,6 +190,12 @@ public class MiCuenta extends Fragment {
         }else{
             return "no";
         }
+    }
+
+
+    private boolean validarEmail(String email) {
+        Pattern pattern = Patterns.EMAIL_ADDRESS;
+        return pattern.matcher(email).matches();
     }
 
 }
